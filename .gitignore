@@ -8,3 +8,5 @@ backend/utils/__pycache__
 backend/research/
 .idea/
 .vscode/
+dist/
+build/

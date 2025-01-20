@@ -49,7 +49,7 @@ Before you begin, ensure you have the following installed on your system:
 ### Configuration
 
 1. **Obtain a Gemini API Key:**
-    *   Go to the Google AI Studio website: [https://makersuite.google.com/app/apikey](https://makersuite.google.com/app/apikey)
+    *   Go to the Google AI Studio website: [https://aistudio.google.com/app/apikey](https://aistudio.google.com/app/apikey)
     *   Create a project if you haven't already.
     *   Generate an API key.
 

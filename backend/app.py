@@ -10,7 +10,7 @@ from utils.FilesExtractor import ExtractFiles
 
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "http://localhost:5173"}})
+CORS(app, resources={r"/*": {"origins": "https://ai-career-helper.onrender.com"}})
 
 
 @app.route('/ats-score', methods=['POST'])
