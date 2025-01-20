@@ -1,0 +1,10 @@
+node_modules
+__pycache__
+.vite
+.env
+backend/.env
+backend/__pycache__
+backend/utils/__pycache__
+backend/research/
+.idea/
+.vscode/

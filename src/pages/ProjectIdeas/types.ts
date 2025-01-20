@@ -1,0 +1,1 @@
+export type Difficulty = 'beginner' | 'intermediate' | 'expert';
