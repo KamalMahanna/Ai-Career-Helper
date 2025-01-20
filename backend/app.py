@@ -1,11 +1,11 @@
 from flask import Flask, request
 from flask_cors import CORS
 
-from utils import get_gemini_content
-from utils.PromptsGenerator import Generate
+from .utils import get_gemini_content
+from .utils.PromptsGenerator import Generate
 
-from utils.Gemini import get_gemini_response
-from utils.FilesExtractor import ExtractFiles
+from .utils.Gemini import get_gemini_response
+from .utils.FilesExtractor import ExtractFiles
 
 
 app = Flask(__name__)
