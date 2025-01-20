@@ -3,3 +3,4 @@ Flask-Cors
 google-generativeai
 PyPDF2
 python-dotenv
+newspaper4k
