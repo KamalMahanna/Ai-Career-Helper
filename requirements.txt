@@ -5,3 +5,4 @@ PyPDF2
 python-dotenv
 newspaper4k
 lxml[html_clean]
+gunicorn
