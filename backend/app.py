@@ -8,12 +8,11 @@ from utils.Gemini import get_gemini_response
 from utils.FilesExtractor import ExtractFiles
 
 
-
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "https://ai-career-helper.onrender.com"}})
 
 
-@app.route('/ats-score', methods=['POST'])
+@app.route("/ats-score", methods=["POST"])
 def ats_score():
     """
     This function calculates the ATS score for a given resume and job description.
@@ -31,7 +30,8 @@ def ats_score():
     except Exception as e:
         return str(e), 400
 
-@app.route('/summarize', methods=['POST'])
+
+@app.route("/summarize", methods=["POST"])
 def text_summarizer():
     try:
         text = ExtractFiles(request).for_summarize()
@@ -42,8 +42,9 @@ def text_summarizer():
 
     except Exception as e:
         return str(e), 400
-    
-@app.route('/career-guide', methods=['POST'])
+
+
+@app.route("/career-guide", methods=["POST"])
 def career_guide():
     try:
         interests = ExtractFiles(request).for_career_guide()
@@ -55,7 +56,8 @@ def career_guide():
     except Exception as e:
         return str(e), 400
 
-@app.route('/interview-questions', methods=['POST'])
+
+@app.route("/interview-questions", methods=["POST"])
 def interview_questions():
     try:
         role = ExtractFiles(request).for_interview_questions()
@@ -68,19 +70,20 @@ def interview_questions():
         return str(e), 400
 
 
-@app.route('/project-ideas', methods=['POST'])
+@app.route("/project-ideas", methods=["POST"])
 def project_ideas():
     try:
         skills, difficulty = ExtractFiles(request).for_project_ideas()
-        prompt = Generate.for_project_ideas(skills,difficulty)
+        prompt = Generate.for_project_ideas(skills, difficulty)
         response = get_gemini_response(prompt)
 
         return response
-    
+
     except Exception as e:
         return str(e), 400
 
-@app.route('/roadmap', methods=['POST'])
+
+@app.route("/roadmap", methods=["POST"])
 def roadmap():
     try:
         skills = ExtractFiles(request).for_roadmap()
@@ -92,5 +95,6 @@ def roadmap():
     except Exception as e:
         return str(e), 400
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     app.run()

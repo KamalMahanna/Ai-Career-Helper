@@ -1,5 +1,6 @@
 import PyPDF2
 
+
 # This file is used to extract text from a PDF file.
 def extract_text_from_pdf(pdf_file: any) -> str:
     """

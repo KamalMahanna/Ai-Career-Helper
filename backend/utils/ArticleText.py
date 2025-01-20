@@ -1,5 +1,6 @@
 from newspaper import Article
 
+
 # This file is used to extract text from a given URL.
 def get_article_text(url: str) -> str:
     """
@@ -7,15 +8,16 @@ def get_article_text(url: str) -> str:
     """
     url = url.strip()
     try:
-        if url.startswith('https://medium.com/'):
-            url = url.replace('https://medium.com/', 'https://readmedium.com/en/')
-        
+        if url.startswith("https://medium.com/"):
+            url = url.replace("https://medium.com/", "https://readmedium.com/en/")
+
         article = Article(url)
         article.download()
         article.parse()
         return article.text
     except Exception as e:
         return str(e)
+
 
 if __name__ == "__main__":
     """

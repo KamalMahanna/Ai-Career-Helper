@@ -3,6 +3,7 @@ class Generate:
     """
     This class is used to generate prompts for the Gemini API.
     """
+
     @staticmethod
     def ats_score_prompt(jobDescription: str) -> str:
         """
@@ -30,6 +31,7 @@ class Generate:
             <{jobDescription}>
             """
         return prompt
+
     @staticmethod
     def summarize_prompt(text: str) -> str:
         """
@@ -43,7 +45,7 @@ class Generate:
         """
 
         return prompt
-    
+
     @staticmethod
     def for_career_guide(interests: str) -> str:
         """
@@ -60,7 +62,7 @@ class Generate:
         """
 
         return prompt
-    
+
     @staticmethod
     def for_interview_questions(role: str) -> str:
         """
@@ -72,7 +74,7 @@ class Generate:
         """
 
         return prompt
-    
+
     @staticmethod
     def for_project_ideas(skills: str, difficulty: str) -> str:
         """
