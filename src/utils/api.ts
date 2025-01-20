@@ -24,7 +24,7 @@ export async function makeApiRequest(endpoint: string, config: ApiRequestConfig)
       formData.append('data', JSON.stringify(config.data));
     }
 
-    const response = await fetch(`http://127.0.0.1:10000${endpoint}`, {
+    const response = await fetch(`ai-career-helper.netlify.app${endpoint}`, {
       method: 'POST',
       body: formData,
     });

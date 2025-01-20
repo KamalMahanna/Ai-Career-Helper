@@ -1,6 +1,6 @@
 # AI Career Helper
 
-[Visit the deployed webpage](https://example.com)
+[Visit the deployed webpage](https://ai-career-helper.netlify.app/)
 
 ## Getting Started
 
