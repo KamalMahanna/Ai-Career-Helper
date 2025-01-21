@@ -35,7 +35,6 @@ Before you begin, ensure you have the following installed on your system:
    ```bash
    pip install -r requirements.txt
    ```
-
 3. **Install Node.js dependencies (frontend):**
 
    ```bash
@@ -52,10 +51,12 @@ Before you begin, ensure you have the following installed on your system:
 2. **Configure Environment Variables:**
 
    * Rename the `.env.example` file in the project root to `.env`.
+
      ```bash
      mv .env.example .env
      ```
    * Open the `.env` file and add your Gemini API key:
+
      ```
      GEMINI_API_KEY=YOUR_API_KEY_HERE
      ```
@@ -68,7 +69,7 @@ To run the development servers:
 
 ```bash
 # Run the backend development server
-python backend/app.py
+gunicorn backend.app:app
 
 # Run the frontend development server
 npm run dev
