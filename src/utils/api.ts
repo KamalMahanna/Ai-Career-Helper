@@ -24,7 +24,7 @@ export async function makeApiRequest(endpoint: string, config: ApiRequestConfig)
       formData.append('data', JSON.stringify(config.data));
     }
 
-    const response = await fetch(`https://ai-career-helper.onrender.com${endpoint}`, {
+    const response = await fetch(`http://127.0.0.1:8000${endpoint}`, {
       method: 'POST',
       body: formData,
     });
