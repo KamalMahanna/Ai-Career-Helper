@@ -8,21 +8,41 @@ interface SegmentedButtonProps {
 }
 
 export function SegmentedButton({ options, value, onChange, className = '' }: SegmentedButtonProps) {
+  // Calculate the position of the active segment for the sliding effect
+  const activeIndex = options.findIndex(option => option === value);
+  const segmentWidth = 100 / options.length;
+
   return (
-    <div className={`inline-flex rounded-lg border border-gray-200 bg-gray-50 p-1 ${className}`}>
-      {options.map((option, index) => (
-        <button
-          key={option}
-          onClick={() => onChange(option)}
-          className={`
-            px-3 py-1.5 text-sm font-medium rounded-md transition-colors
-            ${value === option ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-600 hover:text-gray-900'}
-            ${index === 0 ? 'ml-0' : 'ml-1'}
-          `}
+    <div className={`relative ${className}`}>
+      <div className="w-full flex items-center">
+        {/* Sliding background */}
+        <div
+          className="absolute inset-0 transition-all duration-300 ease-spring"
+          style={{
+            left: `${activeIndex * segmentWidth}%`,
+            width: `${segmentWidth}%`,
+          }}
         >
-          {option}
-        </button>
-      ))}
+          <div className="h-full w-[95%] mx-auto bg-white/90 backdrop-blur-sm rounded-xl shadow-sm" />
+        </div>
+
+        {/* Buttons */}
+        {options.map((option) => (
+          <button
+            key={option}
+            onClick={() => onChange(option)}
+            className={`
+              relative z-10 px-4 py-1.5 text-sm font-medium
+              transition-all duration-200 flex-1 min-w-[90px] text-center
+              ${value === option 
+                ? 'text-primary font-semibold scale-105' 
+                : 'text-gray-600 hover:text-primary/90'}
+            `}
+          >
+            <span className="capitalize">{option}</span>
+          </button>
+        ))}
+      </div>
     </div>
   );
 }

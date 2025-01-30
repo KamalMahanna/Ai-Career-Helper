@@ -7,9 +7,14 @@ interface ResultSectionProps {
 
 export function ResultSection({ content }: ResultSectionProps) {
   return (
-    <div className="mt-8 bg-white rounded-lg shadow-md p-6">
-      <h2 className="text-xl font-semibold text-gray-900 mb-4">Summary</h2>
-      <MarkdownRenderer content={content} />
+    <div>
+      <h2 className="text-2xl font-semibold bg-gradient-to-r from-primary to-secondary 
+        bg-clip-text text-transparent mb-6">
+        Summary
+      </h2>
+      <div className="prose prose-blue max-w-none">
+        <MarkdownRenderer content={content} />
+      </div>
     </div>
   );
 }

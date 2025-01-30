@@ -37,31 +37,50 @@ export function ATSScore() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto">
-      <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">ATS Score & Resume Optimizer</h1>
-        <p className="text-gray-600">Check how well your resume matches the job description</p>
+    <div className="section-container max-w-4xl">
+      {/* Decorative background elements */}
+      <div className="absolute inset-0 overflow-hidden -z-10">
+        <div className="absolute top-1/4 -left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-1/4 -right-1/4 w-96 h-96 bg-accent/5 rounded-full blur-3xl"></div>
       </div>
 
-      <div className="space-y-6">
+      <div className="text-center mb-12 animate-fade-in">
+        <h1 className="text-4xl font-bold bg-gradient-to-r from-primary via-secondary to-accent 
+          bg-clip-text text-transparent mb-4">
+          ATS Score & Resume Optimizer
+        </h1>
+        <p className="text-xl text-gray-600 glass-panel inline-block px-6 py-2 rounded-full">
+          Check how well your resume matches the job description
+        </p>
+      </div>
+
+      <div className="space-y-8">
         <FileUpload file={file} onFileChange={setFile} />
         <JobDescription value={jobDescription} onChange={setJobDescription} />
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 animate-fade-in">
           <button
             onClick={handleAnalyze}
             disabled={!file || !jobDescription || isLoading}
-            className="flex items-center justify-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="primary-button flex items-center justify-center group"
           >
-            <Upload className="w-4 h-4 mr-2" />
+            <Upload className="w-4 h-4 mr-2 transition-transform duration-300 group-hover:scale-110" />
             Analyze Resume
           </button>
           <ClearButton onClick={handleClear} />
         </div>
       </div>
 
-      {isLoading && <LoadingSpinner />}
-      {result && <ResultSection className="mt-4" content={result} />}
+      {isLoading && (
+        <div className="mt-8">
+          <LoadingSpinner />
+        </div>
+      )}
+      {result && (
+        <div className="mt-8 animate-fade-in">
+          <ResultSection className="glass-panel p-6 rounded-xl" content={result} />
+        </div>
+      )}
     </div>
   );
 }

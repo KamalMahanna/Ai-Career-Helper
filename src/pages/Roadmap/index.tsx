@@ -33,28 +33,49 @@ export function Roadmap() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto">
-      <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Learning Roadmap</h1>
-        <p className="text-gray-600">Get a detailed roadmap with resources for your learning journey</p>
+    <div className="section-container max-w-4xl">
+      {/* Decorative background elements */}
+      <div className="absolute inset-0 overflow-hidden -z-10">
+        <div className="absolute top-1/4 -left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-1/4 -right-1/4 w-96 h-96 bg-accent/5 rounded-full blur-3xl"></div>
       </div>
 
+      <div className="text-center mb-12 animate-fade-in">
+        <h1 className="text-4xl font-bold bg-gradient-to-r from-primary via-secondary to-accent 
+          bg-clip-text text-transparent mb-4">
+          Learning Roadmap
+        </h1>
+        <p className="text-xl text-gray-600 glass-panel inline-block px-6 py-2 rounded-full">
+          Get a detailed roadmap with resources for your learning journey
+        </p>
+      </div>
+
+      <div className="glass-panel rounded-2xl p-8 animate-fade-in">
         <SkillInput value={skill} onChange={setSkill} />
 
-        <div className="flex gap-4 mt-6">
+        <div className="flex items-center gap-4 mt-8">
           <button
             onClick={handleGenerateRoadmap}
             disabled={!skill.trim() || isLoading}
-            className="flex items-center justify-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="primary-button flex items-center justify-center group"
           >
-            <Map className="w-4 h-4 mr-2" />
+            <Map className="w-4 h-4 mr-2 transition-transform duration-300 group-hover:scale-110" />
             Generate Roadmap
           </button>
           <ClearButton onClick={handleClear} />
         </div>
+      </div>
 
-      {isLoading && <LoadingSpinner />}
-      {result && <ResultSection content={result} />}
+      {isLoading && (
+        <div className="mt-8">
+          <LoadingSpinner />
+        </div>
+      )}
+      {result && (
+        <div className="mt-8 glass-panel rounded-2xl p-8 animate-fade-in">
+          <ResultSection content={result} />
+        </div>
+      )}
     </div>
   );
 }
