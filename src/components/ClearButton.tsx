@@ -9,10 +9,14 @@ export function ClearButton({ onClick }: ClearButtonProps) {
   return (
     <button
       onClick={onClick}
-      className="p-2 text-gray-600 hover:text-red-600 rounded-full hover:bg-gray-100 transition-colors"
+      className="glass-button p-2 group"
       title="Clear all"
     >
-      <Trash2 size={20} />
+      <Trash2 
+        size={20} 
+        className="text-gray-400 group-hover:text-red-500 transition-all duration-300 
+          group-hover:scale-110" 
+      />
     </button>
   );
 }
