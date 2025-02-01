@@ -16,14 +16,17 @@ export function DifficultySelect({ value, onChange }: DifficultySelectProps) {
         bg-clip-text text-transparent mb-2">
         Project Difficulty
       </label>
-      <div className="w-fit glass-panel rounded-[20px] p-1">
+      <div className="relative z-10 w-fit glass-panel rounded-[20px] p-1 touch-manipulation">
         <SegmentedButton
           options={options}
           value={value}
           onChange={(v) => onChange(v as Difficulty)}
-          className="bg-white/30"
+          className="bg-white/30 relative z-10"
         />
       </div>
+      <p className="text-sm text-gray-500/80 italic">
+        Select the complexity level for project suggestions
+      </p>
     </div>
   );
 }

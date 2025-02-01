@@ -1,13 +1,13 @@
-import os
-
-from dotenv import load_dotenv
-
-load_dotenv()
-
-
-# This file is used to get the Gemini API key from the environment variables.
-def get_api_key() -> str:
+def get_api_key(request_key: str) -> str:
     """
-    Returns the Gemini API key.
+    Returns the Gemini API key from request headers.
+    Args:
+        request_key: API key provided in the request headers (required)
+    Returns:
+        str: The API key to use
+    Raises:
+        ValueError: If no API key is provided
     """
-    return os.getenv("GEMINI_API_KEY")
+    if not request_key:
+        raise ValueError("API key is required")
+    return request_key

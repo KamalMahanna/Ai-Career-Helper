@@ -147,6 +147,39 @@ html {
   }
 }
 
+@keyframes slideInFromTop {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 @keyframes pulse {
   0% {
     opacity: 0.4;
@@ -166,6 +199,45 @@ html {
   animation: fadeIn 0.5s ease-out forwards;
 }
 
+.animate-slide-in-top {
+  animation: slideInFromTop 0.5s cubic-bezier(0.33, 1, 0.68, 1) forwards;
+}
+
+.animate-slide-in-left {
+  animation: slideInFromLeft 0.5s cubic-bezier(0.33, 1, 0.68, 1) forwards;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.5s cubic-bezier(0.33, 1, 0.68, 1) forwards;
+}
+
+/* Animation Utilities */
+.animate-in {
+  animation-duration: 0.5s;
+  animation-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
+  animation-fill-mode: both;
+}
+
+.fade-in-50 {
+  animation-name: fadeIn;
+  animation-duration: 0.5s;
+}
+
+.slide-in-from-top-2 {
+  animation-name: slideInFromTop;
+  transform: translateY(-8px);
+}
+
+.slide-in-from-top-4 {
+  animation-name: slideInFromTop;
+  transform: translateY(-16px);
+}
+
+.slide-in-from-left-4 {
+  animation-name: slideInFromLeft;
+  transform: translateX(-16px);
+}
+
 .animate-pulse {
   animation: pulse 8s ease-in-out infinite;
 }
@@ -176,6 +248,20 @@ html {
 
 .delay-2000 {
   animation-delay: 2s;
+}
+
+/* Wobble hover animation */
+@keyframes wobbleHover {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(2px); }
+  75% { transform: translateX(-2px); }
+}
+
+/* Add wobble animation utility */
+@layer utilities {
+  .animate-wobble-hover {
+    animation: wobbleHover 0.3s ease-in-out;
+  }
 }
 
 /* Gradient shimmer animation */

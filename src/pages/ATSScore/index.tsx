@@ -1,21 +1,46 @@
-import React, { useState } from 'react';
+import * as React from 'react';
+import { useState, useRef, useEffect } from 'react';
+import { useNavigateWithError } from '../../hooks/useNavigateWithError';
 import { Upload } from 'lucide-react';
 import { FileUpload } from './components/FileUpload';
 import { JobDescription } from './components/JobDescription';
 import { ResultSection } from './components/ResultSection';
 import { ClearButton } from '../../components/ClearButton';
 import { makeApiRequest } from '../../utils/api';
-import { LoadingSpinner } from '../../components/LoadingSpinner';
+import { Button } from '../../components/Button';
+import { useApiKey } from '../../hooks/useApiKey';
+import { useSmoothScroll } from '../../hooks/useSmoothScroll';
+import { useRetryTimer } from '../../hooks/useRetryTimer';
 
-export function ATSScore() {
+function ATSScore() {
   const [file, setFile] = useState<File | null>(null);
   const [jobDescription, setJobDescription] = useState('');
   const [result, setResult] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const { checkApiKey } = useApiKey();
+  const resultRef = useRef<HTMLDivElement>(null);
+  const { scrollToElement } = useSmoothScroll();
+
+  useEffect(() => {
+    if (result && !isLoading) {
+      scrollToElement(resultRef.current, { offset: 80, delay: 150 });
+    }
+  }, [result, isLoading, scrollToElement]);
+
+  const { handleApiError } = useNavigateWithError();
+
+  const { retrySeconds, handleResourceExhausted } = useRetryTimer({
+    onRetry: async () => {
+      await handleAnalyze();
+    }
+  });
 
   const handleAnalyze = async () => {
+    setError(null);
+    if (!checkApiKey()) return;
     if (!file || !jobDescription) return;
-
+    
     setIsLoading(true);
     try {
       const response = await makeApiRequest('/ats-score', {
@@ -24,7 +49,20 @@ export function ATSScore() {
       });
       setResult(response);
     } catch (error) {
-      console.error('Analysis failed:', error);
+      if (error instanceof Error) {
+        if (error.message.includes('Resource has been exhausted') || 
+            error.message.includes('rate limit exceeded')) {
+          handleResourceExhausted();
+        } else {
+          try {
+            handleApiError(error);
+          } catch (e) {
+            setError(error.message);
+          }
+        }
+      } else {
+        setError('An unexpected error occurred');
+      }
     } finally {
       setIsLoading(false);
     }
@@ -34,6 +72,7 @@ export function ATSScore() {
     setFile(null);
     setJobDescription('');
     setResult('');
+    setError(null);
   };
 
   return (
@@ -54,33 +93,37 @@ export function ATSScore() {
         </p>
       </div>
 
+      {error && (
+        <div className="mb-8 p-4 bg-red-50 border border-red-200 text-red-600 rounded-lg animate-fade-in">
+          {error}
+        </div>
+      )}
+
       <div className="space-y-8">
         <FileUpload file={file} onFileChange={setFile} />
         <JobDescription value={jobDescription} onChange={setJobDescription} />
 
-        <div className="flex items-center gap-4 animate-fade-in">
-          <button
+        <div className="flex items-center justify-center gap-4 animate-fade-in">
+          <Button
             onClick={handleAnalyze}
-            disabled={!file || !jobDescription || isLoading}
-            className="primary-button flex items-center justify-center group"
+            disabled={!file || !jobDescription}
+            isLoading={isLoading}
+            retrySeconds={retrySeconds}
           >
-            <Upload className="w-4 h-4 mr-2 transition-transform duration-300 group-hover:scale-110" />
-            Analyze Resume
-          </button>
+            <Upload className="w-4 h-4" />
+            <span>Analyze Resume</span>
+          </Button>
           <ClearButton onClick={handleClear} />
         </div>
       </div>
 
-      {isLoading && (
-        <div className="mt-8">
-          <LoadingSpinner />
-        </div>
-      )}
       {result && (
-        <div className="mt-8 animate-fade-in">
+        <div ref={resultRef} className="mt-8 animate-fade-in">
           <ResultSection className="glass-panel p-6 rounded-xl" content={result} />
         </div>
       )}
     </div>
   );
 }
+
+export default ATSScore;

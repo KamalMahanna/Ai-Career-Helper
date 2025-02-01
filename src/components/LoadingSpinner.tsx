@@ -1,13 +1,24 @@
 import React from 'react';
 
-export function LoadingSpinner() {
+export function LoadingSpinner({ className = '' }: { className?: string }) {
   return (
-    <div className="flex items-center justify-center">
-      <div className="relative w-12 h-12">
-        <div className="absolute w-full h-full border-4 border-primary/30 rounded-full"></div>
-        <div className="absolute w-full h-full border-4 border-transparent border-t-primary rounded-full animate-spin-slow"></div>
-        <div className="absolute w-full h-full rounded-full bg-gradient-to-t from-primary/10 to-transparent animate-pulse"></div>
-      </div>
+    <div className={`flex items-center justify-center ${className}`}>
+      <svg
+        className="animate-spin"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21C16.9706 21 21 16.9706 21 12"
+          className="stroke-current"
+          strokeWidth="3"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
     </div>
   );
 }

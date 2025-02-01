@@ -1,17 +1,39 @@
-import React, { useState } from 'react';
+import * as React from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Compass } from 'lucide-react';
 import { InterestInput } from './components/InterestInput';
 import { ResultSection } from './components/ResultSection';
 import { ClearButton } from '../../components/ClearButton';
 import { makeApiRequest } from '../../utils/api';
-import { LoadingSpinner } from '../../components/LoadingSpinner';
+import { Button } from '../../components/Button';
+import { useApiKey } from '../../hooks/useApiKey';
+import { useSmoothScroll } from '../../hooks/useSmoothScroll';
+import { useRetryTimer } from '../../hooks/useRetryTimer';
 
-export function CareerGuide() {
+function CareerGuide() {
   const [interests, setInterests] = useState('');
   const [result, setResult] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const { checkApiKey } = useApiKey();
+  const resultRef = useRef<HTMLDivElement>(null);
+  const { scrollToElement } = useSmoothScroll();
+
+  useEffect(() => {
+    if (result && !isLoading) {
+      scrollToElement(resultRef.current, { offset: 80, delay: 150 });
+    }
+  }, [result, isLoading, scrollToElement]);
+
+  const { retrySeconds, handleResourceExhausted } = useRetryTimer({
+    onRetry: async () => {
+      await handleGetSuggestions();
+    }
+  });
 
   const handleGetSuggestions = async () => {
+    setError(null);
+    if (!checkApiKey()) return;
     if (!interests.trim()) return;
 
     setIsLoading(true);
@@ -21,7 +43,16 @@ export function CareerGuide() {
       });
       setResult(response);
     } catch (error) {
-      console.error('Failed to get career suggestions:', error);
+      if (error instanceof Error) {
+        if (error.message.includes('Resource has been exhausted') || 
+            error.message.includes('rate limit exceeded')) {
+          handleResourceExhausted();
+        }
+        setError(error.message);
+      } else {
+        setError('An unexpected error occurred');
+      }
+      setResult('');
     } finally {
       setIsLoading(false);
     }
@@ -30,6 +61,7 @@ export function CareerGuide() {
   const handleClear = () => {
     setInterests('');
     setResult('');
+    setError(null);
   };
 
   return (
@@ -50,32 +82,36 @@ export function CareerGuide() {
         </p>
       </div>
 
+      {error && (
+        <div className="mb-8 p-4 bg-red-50 border border-red-200 text-red-600 rounded-lg animate-fade-in">
+          {error}
+        </div>
+      )}
+
       <div className="glass-panel rounded-2xl p-8 animate-fade-in">
         <InterestInput value={interests} onChange={setInterests} />
 
-        <div className="flex items-center gap-4 mt-8">
-          <button
+        <div className="flex items-center justify-center gap-4 mt-8">
+          <Button
             onClick={handleGetSuggestions}
-            disabled={!interests.trim() || isLoading}
-            className="primary-button flex items-center justify-center group"
+            disabled={!interests.trim()}
+            isLoading={isLoading}
+            retrySeconds={retrySeconds}
           >
-            <Compass className="w-4 h-4 mr-2 transition-transform duration-300 group-hover:scale-110" />
-            Get Suggestions
-          </button>
+            <Compass className="w-4 h-4" />
+            <span>Get Suggestions</span>
+          </Button>
           <ClearButton onClick={handleClear} />
         </div>
       </div>
 
-      {isLoading && (
-        <div className="mt-8">
-          <LoadingSpinner />
-        </div>
-      )}
       {result && (
-        <div className="mt-8 glass-panel rounded-2xl p-8 animate-fade-in">
+        <div ref={resultRef} className="mt-8 glass-panel rounded-2xl p-8 animate-fade-in">
           <ResultSection content={result} />
         </div>
       )}
     </div>
   );
 }
+
+export default CareerGuide;

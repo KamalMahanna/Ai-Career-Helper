@@ -1,19 +1,39 @@
-import React, { useState } from 'react';
+import * as React from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { MessageSquare } from 'lucide-react';
 import { SkillInput } from './components/SkillInput';
 import { ResultSection } from './components/ResultSection';
 import { ClearButton } from '../../components/ClearButton';
 import { makeApiRequest } from '../../utils/api';
-import { LoadingSpinner } from '../../components/LoadingSpinner';
+import { Button } from '../../components/Button';
+import { useApiKey } from '../../hooks/useApiKey';
+import { useSmoothScroll } from '../../hooks/useSmoothScroll';
+import { useRetryTimer } from '../../hooks/useRetryTimer';
 
-export function InterviewQuestions() {
+function InterviewQuestions() {
   const [skills, setSkills] = useState('');
   const [result, setResult] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const { checkApiKey } = useApiKey();
+  const resultRef = useRef<HTMLDivElement>(null);
+  const { scrollToElement } = useSmoothScroll();
+
+  useEffect(() => {
+    if (result && !isLoading) {
+      scrollToElement(resultRef.current, { offset: 80, delay: 150 });
+    }
+  }, [result, isLoading, scrollToElement]);
+
+  const { retrySeconds, handleResourceExhausted } = useRetryTimer({
+    onRetry: async () => {
+      await handleGenerateQuestions();
+    }
+  });
 
   const handleGenerateQuestions = async () => {
     if (!skills.trim()) return;
+    if (!checkApiKey()) return;
 
     setIsLoading(true);
     setError('');
@@ -23,8 +43,15 @@ export function InterviewQuestions() {
       });
       setResult(response);
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Failed to generate interview questions';
-      setError(message);
+      if (error instanceof Error) {
+        if (error.message.includes('Resource has been exhausted') || 
+            error.message.includes('rate limit exceeded')) {
+          handleResourceExhausted();
+        }
+        setError(error.message);
+      } else {
+        setError('Failed to generate interview questions');
+      }
       setResult('');
     } finally {
       setIsLoading(false);
@@ -58,15 +85,16 @@ export function InterviewQuestions() {
       <div className="glass-panel rounded-2xl p-8 animate-fade-in">
         <SkillInput value={skills} onChange={setSkills} />
 
-        <div className="flex items-center gap-4 mt-8">
-          <button
+        <div className="flex items-center justify-center gap-4 mt-8">
+          <Button
             onClick={handleGenerateQuestions}
-            disabled={!skills.trim() || isLoading}
-            className="primary-button flex items-center justify-center group"
+            disabled={!skills.trim()}
+            isLoading={isLoading}
+            retrySeconds={retrySeconds}
           >
-            <MessageSquare className="w-4 h-4 mr-2 transition-transform duration-300 group-hover:scale-110" />
-            Generate Questions
-          </button>
+            <MessageSquare className="w-4 h-4" />
+            <span>Generate Questions</span>
+          </Button>
           <ClearButton onClick={handleClear} />
         </div>
 
@@ -77,16 +105,13 @@ export function InterviewQuestions() {
         )}
       </div>
 
-      {isLoading && (
-        <div className="mt-8">
-          <LoadingSpinner />
-        </div>
-      )}
       {result && (
-        <div className="mt-8 glass-panel rounded-2xl p-8 animate-fade-in">
+        <div ref={resultRef} className="mt-8 glass-panel rounded-2xl p-8 animate-fade-in">
           <ResultSection content={result} />
         </div>
       )}
     </div>
   );
 }
+
+export default InterviewQuestions;

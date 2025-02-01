@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { 
   FileText, FileSearch, Book, MessageSquare, 
@@ -44,7 +44,7 @@ const features = [
   }
 ];
 
-export function Home() {
+function Home() {
   return (
     <div className="section-container relative min-h-[90vh] flex flex-col">
       {/* Enhanced background elements */}
@@ -116,3 +116,5 @@ export function Home() {
     </div>
   );
 }
+
+export default Home;
