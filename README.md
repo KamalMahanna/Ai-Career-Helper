@@ -48,20 +48,7 @@ Before you begin, ensure you have the following installed on your system:
    * Go to the Google AI Studio website: [https://aistudio.google.com/app/apikey](https://aistudio.google.com/app/apikey)
    * Create a project if you haven't already.
    * Generate an API key.
-2. **Configure Environment Variables:**
 
-   * Rename the `.env.example` file in the project root to `.env`.
-
-     ```bash
-     mv .env.example .env
-     ```
-   * Open the `.env` file and add your Gemini API key:
-
-     ```
-     GEMINI_API_KEY=YOUR_API_KEY_HERE
-     ```
-
-     Replace `YOUR_API_KEY_HERE` with the API key you obtained.
 
 ### Running the Application
 
