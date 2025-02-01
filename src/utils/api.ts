@@ -42,7 +42,7 @@ export async function makeApiRequest(endpoint: string, config: ApiRequestConfig)
     }
 
     const makeRequest = async (): Promise<string> => {
-      const response = await fetch(`http://localhost:8000${endpoint}`, {
+      const response = await fetch(`https://ai-career-helper.onrender.com${endpoint}`, {
         method: 'POST',
         headers: getHeaders(),
         body: formData,
