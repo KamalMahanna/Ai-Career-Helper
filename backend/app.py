@@ -12,7 +12,12 @@ def get_api_key_from_headers():
 
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "https://ai-career-helper.netlify.app"}})
+CORS(app, resources={r"/*": {
+    "origins": "https://ai-career-helper.netlify.app",
+    "methods": ["POST", "OPTIONS"],
+    "allow_headers": ["X-Gemini-Key", "Content-Type"],
+    "max_age": 3600
+}})
 
 
 @app.route("/ats-score", methods=["POST"])
