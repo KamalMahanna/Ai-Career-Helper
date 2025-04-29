@@ -10,3 +10,4 @@ backend/research/
 .vscode/
 dist/
 build/
+test.ipynb
