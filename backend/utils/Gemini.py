@@ -1,10 +1,10 @@
-import google.generativeai as genai
+from google import genai
 from .ApiConfig import get_api_key
 
 
 # This file is used to get the response from the Gemini API.
 def get_gemini_response(
-    contents: list, model_name: str = "gemini-2.0-flash-thinking-exp-01-21", api_key: str = None
+    contents: list, model_name: str = "gemini-2.5-flash-preview-04-17", api_key: str = None
 ) -> str:
     """
     This function gets the response from the Gemini API.
@@ -21,10 +21,12 @@ def get_gemini_response(
         if not api_key:
             raise ValueError("API key is required")
 
-        genai.configure(api_key=get_api_key(api_key))
-        model = genai.GenerativeModel(model_name=model_name)
-        response = model.generate_content(contents=contents)
-        return response.parts[-1].text
+        client = genai.Client(api_key=get_api_key(api_key))       
+        response = client.models.generate_content(
+                        model=model_name,
+                        contents=contents)
+
+        return response.text
 
     except ValueError as e:
         return {

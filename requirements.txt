@@ -1,6 +1,6 @@
 Flask
 Flask-Cors
-google-generativeai
+google-genai
 PyPDF2
 python-dotenv
 newspaper4k

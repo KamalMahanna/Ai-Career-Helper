@@ -12,7 +12,13 @@ def get_api_key_from_headers():
 
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": ["http://localhost:5173", "http://127.0.0.1:5173"]}})
+CORS(app, resources={r"/*": {
+    "origins": ["http://localhost:5173", 
+                "http://127.0.0.1:5173"],
+    "methods": ["POST", "OPTIONS"],
+    "allow_headers": ["X-Gemini-Key", "Content-Type"],
+    "max_age": 3600
+}})
 
 
 @app.route("/ats-score", methods=["POST"])
