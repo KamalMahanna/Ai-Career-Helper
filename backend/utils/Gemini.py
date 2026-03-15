@@ -4,7 +4,7 @@ from .ApiConfig import get_api_key
 
 # This file is used to get the response from the Gemini API.
 def get_gemini_response(
-    contents: list, model_name: str = "gemini-2.5-flash-preview-04-17", api_key: str = None
+    contents: list, model_name: str = "gemini-flash-latest", api_key: str = None
 ) -> str:
     """
     This function gets the response from the Gemini API.

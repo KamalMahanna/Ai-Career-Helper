@@ -25,6 +25,8 @@ function getHeaders(): HeadersInit {
   };
 }
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://ai-career-helper.onrender.com';
+
 export async function makeApiRequest(endpoint: string, config: ApiRequestConfig): Promise<string> {
   try {
     const formData = new FormData();
@@ -42,7 +44,7 @@ export async function makeApiRequest(endpoint: string, config: ApiRequestConfig)
     }
 
     const makeRequest = async (): Promise<string> => {
-      const response = await fetch(`https://ai-career-helper.onrender.com${endpoint}`, {
+      const response = await fetch(`${API_BASE_URL}${endpoint}`, {
         method: 'POST',
         headers: getHeaders(),
         body: formData,

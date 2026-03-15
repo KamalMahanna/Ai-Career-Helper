@@ -1,8 +1,8 @@
-Flask
-Flask-Cors
-google-genai
-PyPDF2
-python-dotenv
-newspaper4k
-lxml[html_clean]
-gunicorn
+Flask>=3.0.0
+Flask-Cors>=4.0.0
+google-genai>=1.0.0
+pypdf>=4.0.0
+python-dotenv>=1.0.0
+newspaper4k>=0.9.3
+lxml[html_clean]>=5.1.0
+gunicorn>=21.2.0

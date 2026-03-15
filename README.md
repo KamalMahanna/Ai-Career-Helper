@@ -50,12 +50,29 @@ Before you begin, ensure you have the following installed on your system:
    * Generate an API key.
 
 
-### Running the Application
+### Running with Docker
+
+You can run the entire application (frontend and backend) using Docker Compose.
+
+1.  **Build and run the containers:**
+
+    ```bash
+    docker-compose up --build
+    ```
+
+2.  **Access the application:**
+    -   Frontend: [http://localhost:3000](http://localhost:3000)
+    -   Backend API: [http://localhost:5000](http://localhost:5000)
+
+The frontend is configured to communicate with the backend at `http://localhost:5000`.
+
+### Running the Application Locally (Without Docker)
 
 To run the development servers:
 
 ```bash
 # Run the backend development server
+# Make sure you are in the project root
 gunicorn backend.app:app
 
 # Run the frontend development server
