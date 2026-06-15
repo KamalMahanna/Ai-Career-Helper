@@ -25,12 +25,12 @@ function getHeaders(): HeadersInit {
   };
 }
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://ai-career-helper.onrender.com';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://ai-career-helper-k8bo.onrender.com';
 
 export async function makeApiRequest(endpoint: string, config: ApiRequestConfig): Promise<string> {
   try {
     const formData = new FormData();
-    
+
     if (config.files) {
       config.files.forEach(file => {
         if (file instanceof File) {
@@ -38,7 +38,7 @@ export async function makeApiRequest(endpoint: string, config: ApiRequestConfig)
         }
       });
     }
-    
+
     if (config.data) {
       formData.append('data', JSON.stringify(config.data));
     }
@@ -53,7 +53,7 @@ export async function makeApiRequest(endpoint: string, config: ApiRequestConfig)
       if (!response.ok) {
         const error = new Error('API request failed') as ApiError;
         error.status = response.status;
-        
+
         try {
           const errorData = await response.json();
           error.message = errorData.message || `API request failed with status ${response.status}`;
@@ -62,7 +62,7 @@ export async function makeApiRequest(endpoint: string, config: ApiRequestConfig)
         } catch {
           error.message = `API request failed with status ${response.status}`;
         }
-        
+
         // Handle API key and rate limit errors
         if (error.code === 'ResourceExhausted') {
           try {
@@ -78,15 +78,15 @@ export async function makeApiRequest(endpoint: string, config: ApiRequestConfig)
         }
 
         // Handle invalid API key errors
-        if (error.code === 'InvalidKey' || 
-            error.message.toLowerCase().includes('api key') || 
-            error.message.toLowerCase().includes('invalid key')) {
+        if (error.code === 'InvalidKey' ||
+          error.message.toLowerCase().includes('api key') ||
+          error.message.toLowerCase().includes('invalid key')) {
           localStorage.removeItem('groq_api_key');
           const invalidKeyError = new Error('Invalid API key') as ApiError;
           invalidKeyError.code = 'InvalidApiKey';
           throw invalidKeyError;
         }
-        
+
         throw error;
       }
 
