@@ -19,9 +19,9 @@ async function handleResourceExhausted<T>(retryFn: () => Promise<T>): Promise<T>
 }
 
 function getHeaders(): HeadersInit {
-  const apiKey = localStorage.getItem('gemini_api_key');
+  const apiKey = localStorage.getItem('groq_api_key');
   return {
-    'X-Gemini-Key': apiKey || '',
+    'X-Groq-Key': apiKey || '',
   };
 }
 
@@ -70,7 +70,7 @@ export async function makeApiRequest(endpoint: string, config: ApiRequestConfig)
             return await handleResourceExhausted(makeRequest);
           } catch (retryError) {
             // If retry also fails, clear API key and throw error
-            localStorage.removeItem('gemini_api_key');
+            localStorage.removeItem('groq_api_key');
             const rateLimitError = new Error('API rate limit exceeded') as ApiError;
             rateLimitError.code = 'ResourceExhausted';
             throw rateLimitError;
@@ -81,7 +81,7 @@ export async function makeApiRequest(endpoint: string, config: ApiRequestConfig)
         if (error.code === 'InvalidKey' || 
             error.message.toLowerCase().includes('api key') || 
             error.message.toLowerCase().includes('invalid key')) {
-          localStorage.removeItem('gemini_api_key');
+          localStorage.removeItem('groq_api_key');
           const invalidKeyError = new Error('Invalid API key') as ApiError;
           invalidKeyError.code = 'InvalidApiKey';
           throw invalidKeyError;

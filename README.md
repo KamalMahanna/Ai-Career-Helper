@@ -43,10 +43,10 @@ Before you begin, ensure you have the following installed on your system:
 
 ### Configuration
 
-1. **Obtain a Gemini API Key:**
+1. **Obtain a Groq API Key:**
 
-   * Go to the Google AI Studio website: [https://aistudio.google.com/app/apikey](https://aistudio.google.com/app/apikey)
-   * Create a project if you haven't already.
+   * Go to the Groq Console: [https://console.groq.com/keys](https://console.groq.com/keys)
+   * Create an account / sign in.
    * Generate an API key.
 
 

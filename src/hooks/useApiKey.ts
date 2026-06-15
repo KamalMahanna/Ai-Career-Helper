@@ -5,7 +5,7 @@ export function useApiKey() {
   const navigate = useNavigate();
 
   const checkApiKey = useCallback(() => {
-    const apiKey = localStorage.getItem('gemini_api_key');
+    const apiKey = localStorage.getItem('groq_api_key');
     if (!apiKey) {
       navigate('/api-keys');
       return false;

@@ -1,21 +1,21 @@
 from flask import Flask, request
 from flask_cors import CORS
 
-from .utils import get_gemini_content
 from .utils.PromptsGenerator import Generate
-from .utils.Gemini import get_gemini_response
+from .utils.Groq import get_groq_response
 from .utils.FilesExtractor import ExtractFiles
+from .utils.TextFromPdf import extract_text_from_pdf
 
 def get_api_key_from_headers():
     """Extract API key from request headers"""
-    return request.headers.get('X-Gemini-Key')
+    return request.headers.get('X-Groq-Key')
 
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {
     "origins": ["https://ai-career-helper.netlify.app", "http://localhost:3000"],
     "methods": ["POST", "OPTIONS"],
-    "allow_headers": ["X-Gemini-Key", "Content-Type"],
+    "allow_headers": ["X-Groq-Key", "Content-Type"],
     "max_age": 3600
 }})
 
@@ -29,9 +29,10 @@ def ats_score():
         data: tuple = ExtractFiles(request).for_ats_score()
         jobDescription, resumePdf = data[0], data[1]
 
+        resume_text = extract_text_from_pdf(resumePdf)
         prompt = Generate.ats_score_prompt(jobDescription)
-        gemini_content = get_gemini_content(resumePdf, prompt)
-        response = get_gemini_response(gemini_content, api_key=get_api_key_from_headers())
+        full_prompt = f"{prompt}\n\nHere is the resume content:\n{resume_text}"
+        response = get_groq_response(full_prompt, api_key=get_api_key_from_headers())
 
         return response
 
@@ -44,7 +45,7 @@ def text_summarizer():
     try:
         text = ExtractFiles(request).for_summarize()
         prompt = Generate.summarize_prompt(text)
-        response = get_gemini_response(prompt, api_key=get_api_key_from_headers())
+        response = get_groq_response(prompt, api_key=get_api_key_from_headers())
 
         return response
 
@@ -57,7 +58,7 @@ def career_guide():
     try:
         interests = ExtractFiles(request).for_career_guide()
         prompt = Generate.for_career_guide(interests)
-        response = get_gemini_response(prompt, api_key=get_api_key_from_headers())
+        response = get_groq_response(prompt, api_key=get_api_key_from_headers())
 
         return response
 
@@ -70,7 +71,7 @@ def interview_questions():
     try:
         role = ExtractFiles(request).for_interview_questions()
         prompt = Generate.for_interview_questions(role)
-        response = get_gemini_response(prompt, api_key=get_api_key_from_headers())
+        response = get_groq_response(prompt, api_key=get_api_key_from_headers())
 
         return response
 
@@ -83,7 +84,7 @@ def project_ideas():
     try:
         skills, difficulty = ExtractFiles(request).for_project_ideas()
         prompt = Generate.for_project_ideas(skills, difficulty)
-        response = get_gemini_response(prompt, api_key=get_api_key_from_headers())
+        response = get_groq_response(prompt, api_key=get_api_key_from_headers())
 
         return response
 
@@ -96,7 +97,7 @@ def roadmap():
     try:
         skills = ExtractFiles(request).for_roadmap()
         prompt = Generate.for_roadmap(skills)
-        response = get_gemini_response(prompt, api_key=get_api_key_from_headers())
+        response = get_groq_response(prompt, api_key=get_api_key_from_headers())
 
         return response
 

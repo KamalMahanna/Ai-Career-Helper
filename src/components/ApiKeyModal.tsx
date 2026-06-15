@@ -39,7 +39,7 @@ export function ApiKeyModal({ isOpen, onClose }: ApiKeyModalProps) {
       }
 
       // Store the key
-      localStorage.setItem('gemini_api_key', trimmedKey);
+      localStorage.setItem('groq_api_key', trimmedKey);
       
       // Animate out before closing
       setIsVisible(false);
@@ -91,7 +91,7 @@ export function ApiKeyModal({ isOpen, onClose }: ApiKeyModalProps) {
         <p className={`text-gray-600 dark:text-gray-400 text-sm mb-4
                       transition-all duration-300 transform
                       ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-2 opacity-0'}`}>
-          Please enter your Gemini API key to use this feature. Your key will be stored locally on your device.
+          Please enter your Groq API key to use this feature. Your key will be stored locally on your device.
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-4">

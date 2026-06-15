@@ -1,6 +1,6 @@
 def get_api_key(request_key: str) -> str:
     """
-    Returns the Gemini API key from request headers.
+    Returns the Groq API key from request headers.
     Args:
         request_key: API key provided in the request headers (required)
     Returns:

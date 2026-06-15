@@ -27,7 +27,7 @@ function ApiKeys() {
 
   useEffect(() => {
     // Get API key from localStorage
-    const storedApiKey = localStorage.getItem('gemini_api_key');
+    const storedApiKey = localStorage.getItem('groq_api_key');
     setApiKey(storedApiKey);
     
     // Check URL parameters for error
@@ -37,7 +37,7 @@ function ApiKeys() {
     if (error === 'invalid_key' || error === 'rate_limit') {
       setShowError(true);
       const message = error === 'invalid_key'
-        ? 'The API key you provided is invalid. Please ensure you have copied the correct key from Google AI Studio.'
+        ? 'The API key you provided is invalid. Please ensure you have copied the correct key from Groq Console.'
         : 'API rate limit exceeded. Please wait for 60 seconds before making another request.';
       setErrorMessage(message);
       
@@ -67,7 +67,7 @@ function ApiKeys() {
 
   const handleSaveKey = () => {
     if (inputValue.trim()) {
-      localStorage.setItem('gemini_api_key', inputValue.trim());
+      localStorage.setItem('groq_api_key', inputValue.trim());
       setApiKey(inputValue.trim());
       setInputValue('');
       navigate(-1); // Go back to previous page
@@ -75,7 +75,7 @@ function ApiKeys() {
   };
 
   const handleDeleteKey = () => {
-    localStorage.removeItem('gemini_api_key');
+    localStorage.removeItem('groq_api_key');
     setApiKey(null);
   };
 
@@ -115,7 +115,7 @@ function ApiKeys() {
             <div className={`space-y-4 pb-2 transition-all duration-300 
                            ${showGuide ? 'border-b border-white/10' : ''}`}>
               <p className="text-gray-600 dark:text-gray-400 animate-in fade-in duration-500">
-                Please enter your Gemini API key. Your key will be stored locally on your device.
+                Please enter your Groq API key. Your key will be stored locally on your device.
               </p>
               <div className="flex gap-3">
                 <div className="flex-1 relative">
@@ -193,20 +193,20 @@ function ApiKeys() {
                 <span className="text-primary font-semibold min-w-[1.5rem] text-right">1.</span>
                 <span>
                   Visit the{' '}
-                  <a href="https://makersuite.google.com/app/apikey" 
+                  <a href="https://console.groq.com/keys" 
                      target="_blank" 
                      rel="noopener noreferrer" 
                      className="text-primary hover:underline transform hover:scale-105 inline-block transition-transform duration-300"
                      style={{ willChange: 'transform' }}>
-                    Google AI Studio
+                    Groq Console
                   </a>
-                  {' '}and sign in with your Google account.
+                  {' '}and sign in.
                 </span>
               </p>
 
               <p className="text-gray-600 dark:text-gray-400 flex gap-2">
                 <span className="text-primary font-semibold min-w-[1.5rem] text-right">2.</span>
-                <span>Click on "Get API key" button and either create a new key or select an existing one.</span>
+                <span>Click on "Create API Key" button and generate a new key.</span>
               </p>
 
               <p className="text-gray-600 dark:text-gray-400 flex gap-2">

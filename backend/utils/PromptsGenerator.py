@@ -1,7 +1,7 @@
-# This file is used to generate prompts for the Gemini API.
+# This file is used to generate prompts for the Groq API.
 class Generate:
     """
-    This class is used to generate prompts for the Gemini API.
+    This class is used to generate prompts for the Groq API.
     """
 
     @staticmethod
