@@ -25,7 +25,7 @@ function getHeaders(): HeadersInit {
   };
 }
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://ai-career-helper-k8bo.onrender.com';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://ai-career-helper-k8bo.onrender.com/';
 
 export async function makeApiRequest(endpoint: string, config: ApiRequestConfig): Promise<string> {
   try {
