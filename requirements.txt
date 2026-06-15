@@ -6,3 +6,4 @@ newspaper4k>=0.9.3
 lxml[html_clean]>=5.1.0
 gunicorn>=21.2.0
 groq
+lxml_html_clean
