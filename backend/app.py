@@ -13,9 +13,9 @@ def get_api_key_from_headers():
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {
-    "origins": ["https://ai-career-helper.netlify.app", "http://localhost:3000"],
+    "origins": "*",
     "methods": ["POST", "OPTIONS"],
-    "allow_headers": ["X-Groq-Key", "Content-Type"],
+    "allow_headers": "*",
     "max_age": 3600
 }})
 

@@ -44,7 +44,9 @@ export async function makeApiRequest(endpoint: string, config: ApiRequestConfig)
     }
 
     const makeRequest = async (): Promise<string> => {
-      const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+      const baseUrl = API_BASE_URL.replace(/\/$/, '');
+      const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+      const response = await fetch(`${baseUrl}${cleanEndpoint}`, {
         method: 'POST',
         headers: getHeaders(),
         body: formData,
